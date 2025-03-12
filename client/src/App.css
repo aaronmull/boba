@@ -125,3 +125,52 @@
 .success {
   color: green;
 }
+
+.leaderboard {
+  width: 300px;
+  background-color: #121212;
+  padding: 40px;
+  border-radius: 20px;
+  opacity: 75%;
+  border: 2px solid gray;
+  margin: 0 auto;
+}
+
+.leaderboard button {
+  display: block;
+  margin: 10px auto;
+  width: 150px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgb(255, 255, 255);
+  color: rgb(255, 255, 255);
+  font-size: 16px;
+  background-color: #414141;
+  cursor: pointer;
+}
+
+.leaderboard select {
+  display: block;
+  width: 100px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid gray;
+}
+
+.chart {
+  width: 500px;
+  background-color: #121212;
+  padding: 40px;
+  border-radius: 20px;
+  opacity: 75%;
+  border: 2px solid gray;
+  margin: 0 auto;
+}
+
+.chart select {
+  display: block;
+  width: 400px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid gray;
+}

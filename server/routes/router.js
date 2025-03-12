@@ -36,6 +36,32 @@ router.post('/data', async(req, res) => {
 
 })
 
+//Data gets
+router.get('/data/tenfly', async (req, res) => {
+    
+    const tenflyData = await schemas.TenFly.find({}).exec()
+    if (tenflyData) {
+        res.json(tenflyData)
+    }
+    else {
+        console.error(error)
+        res.status(500).send('Error fetching tenfly data')
+    }
+
+})
+router.get('/data/tenstart', async (req, res) => {
+
+    const tenstartData = await schemas.TenStart.find({}).exec()
+    if (tenstartData) {
+        res.json(tenstartData)
+    }
+    else {
+        console.error(error)
+        res.status(500).send('Error fetching tenfly data')
+    }
+
+})
+
 // Athlete get/post
 router.get('/athletes', async (req, res) => {
     
