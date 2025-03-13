@@ -1,18 +1,16 @@
 import { useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
 import axios from "axios"
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
 
 export default function Data() {
+
     const { metric } = useParams()
+    
     const [data, setData] = useState([])
     const [athletes, setAthletes] = useState([])
 
     const [selectedGender, setSelectedGender] = useState('All')
     const [selectedSport, setSelectedSport] = useState('All')
-    
-    const [athleteData, setAthleteData] = useState([])
-    const [selectedAthlete, setSelectedAthlete] = useState('')
     
     const [showAll, setShowAll] = useState(false)
 
@@ -29,10 +27,6 @@ export default function Data() {
             processing = false
         }
     }, [metric])
-
-    useEffect( () => {
-        setAthleteData(getAthleteData())
-    }, [selectedAthlete, data])
 
     const fetchData = async(processing) => {
         await axios.get(`http://localhost:4000/data/${metric}`)
@@ -77,42 +71,6 @@ export default function Data() {
 
     const leaderboardData = getLeaderboardData()
     const visibleData = showAll ? leaderboardData : leaderboardData.slice(0, 10)
-
-    const getAthleteData = () => {
-        if (!selectedAthlete) return []
-
-        const filteredData = data
-            .filter(entry => entry.athlete === selectedAthlete)
-            .map(entry => ({
-                date: new Date(entry.date).toLocaleDateString(),
-                time: entry.time,
-            }))
-            .sort((a, b) => new Date(a.date) - new Date(b.date))
-
-            const fastestTimesByDate = new Map()
-
-            filteredData.forEach(entry => {
-                const formattedDate = new Date(entry.date).toLocaleDateString()
-                if(!fastestTimesByDate.has(formattedDate) || entry.time < fastestTimesByDate.get(formattedDate).time) {
-                    fastestTimesByDate.set(formattedDate, { date: formattedDate, time: entry.time })
-                }
-            })
-
-            return Array.from(fastestTimesByDate.values())
-    }
-
-    const AthleteDropdown = () => {
-        return (
-            <select id="athlete" name="athlete" value={selectedAthlete} onChange={ (e) => setSelectedAthlete(e.target.value) }>
-                <option value="" disabled>(none)</option>
-                {
-                    athletes?.map( (item) => (
-                        <option value={item.name} key={item._id}>{item.name}</option>
-                    ))
-                }
-            </select>
-        )
-    }
 
     return (
         <>
@@ -165,23 +123,6 @@ export default function Data() {
                         </button>
                     )}
                 </div>
-            </div>
-
-            <div className="chart">
-                <AthleteDropdown />
-                {selectedAthlete && athleteData.length > 0 ? (
-                    <ResponsiveContainer width="100%" height={300}>
-                        <LineChart data={athleteData}>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="date" />
-                            <YAxis />
-                            <Tooltip />
-                            <Line type="monotone" dataKey="time" stroke="#8884d8" />
-                        </LineChart>
-                    </ResponsiveContainer>
-                ) : (
-                    <p>Select an athlete to see their {metricNames[metric]} progression</p>
-                )}
             </div>
         </>
     )
