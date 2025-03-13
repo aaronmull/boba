@@ -107,7 +107,7 @@ export default function Data() {
                         <tbody>
                             {visibleData.map((entry, index) => (
                                 <tr key={index}>
-                                    <td>{index + 1}</td>
+                                    <td><b>{index + 1}</b></td>
                                     <td>{entry.athlete}</td>
                                     <td>{entry.time}</td>
                                     <td>{new Date(entry.date).toLocaleDateString()}</td>
