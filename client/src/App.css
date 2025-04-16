@@ -126,6 +126,13 @@
   color: green;
 }
 
+
+.data ul{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+
 .leaderboard {
   width: 400px;
   border-radius: 20px;
@@ -136,4 +143,25 @@
 .leaderboard label {
   display:inline-flex;
   margin: 10px;
+}
+
+.leaderboard select {
+  display: inline-block;
+  width: 100px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid gray;
+}
+
+
+.chart {
+  display: block;
+}
+
+.chart select {
+  display: inline-block;
+  width: 200px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid gray;
 }

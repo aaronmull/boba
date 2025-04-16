@@ -14,12 +14,13 @@ export default function Data() {
     }
 
     return (
-        <>
+        <div className="data">
             <h1>{metricNames[metric]} Data</h1>
 
-            <Leaderboard metric={metric} />
-
-            <Chart />
-        </>
+            <ul>
+                <Leaderboard metric={metric} />
+                <Chart />
+            </ul>
+        </div>
     )
 }
