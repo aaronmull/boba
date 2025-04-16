@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
 
-function Leaderboard({metric}) {
+function Leaderboard({ metric, data }) {
 
-    const [data, setData] = useState([])
     const [athletes, setAthletes] = useState([])
     const [selectedGender, setSelectedGender] = useState('All')
     const [selectedSport, setSelectedSport] = useState('All')
@@ -11,22 +10,11 @@ function Leaderboard({metric}) {
 
     useEffect( () => {
         let processing = true
-        fetchData(processing)
         fetchAthletes(processing)
         return () => {
             processing = false
         }
     }, [metric])
-
-    const fetchData = async(processing) => {
-        await axios.get(`http://localhost:4000/data/${metric}`)
-        .then(res => {
-            if(processing){
-                setData(res.data)
-            }
-        })
-        .catch(err => console.log(err))
-    }
 
     const fetchAthletes = async(processing) => {
         await axios.get('http://localhost:4000/athletes')
