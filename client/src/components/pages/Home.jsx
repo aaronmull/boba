@@ -13,6 +13,10 @@ export default function Home() {
                     <a href="/data/tenstart" className="dataLink"><img className="dataImage" src={logo} alt="10yd Start Data"/></a>
                     <br /><a href="/data/tenstart" className="dataLink">10-yd Start Data</a>
                 </li>
+                <li>
+                    <a href="/data/athlete" className="dataLink"><img className="dataImage" src={logo} alt="Individual Athlete Data" /></a>
+                    <br /><a href="/data/athlete" className="dataLink">Individual Athlete Data</a>
+                </li>
             </ul>
         </>
     )

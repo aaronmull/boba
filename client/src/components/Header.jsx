@@ -16,7 +16,7 @@ export default function Header(props) {
                     <a href="/">Home</a>
                 </li>
                 <li>
-                    <a href="/new-session">New Session</a>
+                    <a href="/new-session">New Speed Session</a>
                 </li>
                 <li>
                     <a href="/add-athlete">Add Athlete</a>

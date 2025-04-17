@@ -11,6 +11,8 @@ function SessionEntry() {
     const [time, setTime] = useState('')
     const [error, setError] = useState('')
 
+    const [performanceData, setPerformanceData] = useState([])
+
     const date = localStorage.getItem("sessionDate")
 
     const axiosPostData = async() => {
@@ -23,6 +25,39 @@ function SessionEntry() {
 
         await axios.post('http://localhost:4000/data', postData)
         .then(res => setError(<p className="success">{res.data}</p>))
+    }
+
+    useEffect(() => {
+        axios.get(`http://localhost:4000/data/${params.metric}`)
+            .then(res => {
+                console.log("Fetched data:", res.data)
+                setPerformanceData(res.data)
+            })
+            .catch(err => console.log(err))
+    }, [params.metric])
+
+    const getBestEntry = () => {
+        if (!selectedAthlete) return null
+        
+        const filtered = performanceData.filter(entry =>
+            entry.athlete === selectedAthlete
+        )
+
+        if (filtered.length === 0) return null
+
+        return filtered.reduce((best, current) => 
+            Number(current.time) < Number(best.time) ? current : best
+        )
+    }
+    
+    const getBestTime = () => {
+        const best = getBestEntry()
+        return best ? Number(best.time) : null
+    }
+
+    const getBestDate = () => {
+        const best = getBestEntry()
+        return best ? new Date(best.date).toLocaleDateString('en-US', { timeZone: 'UTC' }) : null
     }
 
     const metricNames = {
@@ -54,6 +89,13 @@ function SessionEntry() {
 
                 <label htmlFor="time">Time</label>
                 <input type="number" id="time" name="time" value={time} onChange={(e) => setTime(e.target.value)} />
+
+                {selectedAthlete && (
+                    <p>
+                        PR: <strong>{getBestTime() ?? "N/A"}</strong>
+                        {getBestDate() && <span> on {getBestDate()}</span>}
+                    </p>
+                )}
 
                 {error}
 

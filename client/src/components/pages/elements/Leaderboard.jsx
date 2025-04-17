@@ -85,7 +85,7 @@ function Leaderboard({ metric, data }) {
                                 <td><b>{index + 1}</b></td>
                                 <td>{entry.athlete}</td>
                                 <td>{entry.time}</td>
-                                <td>{new Date(entry.date).toLocaleDateString()}</td>
+                                <td>{new Date(entry.date).toLocaleDateString('en-US', { timeZone: 'UTC' })}</td>
                             </tr>
                         ))}
                     </tbody>
