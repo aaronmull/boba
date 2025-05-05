@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const schemas = require('../models/schemas')
 
-// Data post
+// Sprint data post
 router.post('/data', async(req, res) => {
     const {metric, date, athlete, time} = req.body
 
@@ -36,7 +36,7 @@ router.post('/data', async(req, res) => {
 
 })
 
-//Data gets
+// Sprint data gets
 router.get('/data/tenfly', async (req, res) => {
     
     const tenflyData = await schemas.TenFly.find({}).exec()
@@ -58,6 +58,80 @@ router.get('/data/tenstart', async (req, res) => {
     else {
         console.error(error)
         res.status(500).send('Error fetching tenfly data')
+    }
+
+})
+
+// Misc Data get/post
+router.post('/misc_data', async (req, res) => {
+    
+    const {athlete, metric, measurement} = req.body
+
+    const miscData = {athlete: athlete, metric: metric, measurement: measurement}
+    const newMiscData = new schemas.MiscData(miscData)
+    const saveData = await newMiscData.save()
+    if(saveData){
+        res.send('Data saved. Ready for next entry.')
+    } else {
+        res.send('Failed to save data.')
+    }
+
+})
+
+router.get('/data/misc_data', async(req, res) => {
+    
+    const miscData = await schemas.MiscData.find({}).exec()
+
+    if (miscData) {
+        res.json(miscData)
+    } else {
+        console.error(error)
+        res.status(500).send('Error fetching miscellaneous data')
+    }
+
+})
+
+// Misc Metrics get/post
+router.post('/misc_metrics', async (req, res) => {
+
+    const {metric, units} = req.body
+
+    try {
+        
+        const existing = await schemas.MiscMetrics.findOne({
+            metric: { $regex: new RegExp(`^${metric}$`, 'i') }
+        })
+
+        if (existing) {
+            return res.status(400).send("Metric already exists.")
+        }
+
+        const miscMetricData = {metric: metric, units: units}
+        const newMiscMetric = new schemas.MiscMetrics(miscMetricData)
+        const saveMetric = await newMiscMetric.save()
+
+        if(saveMetric){
+            res.send('Metric saved.')
+        } else {
+            res.send('Failed to save metric.')
+        }
+    } catch (err) {
+        console.error(err)
+        res.status(500).send("Duplicate Check Failed")
+    }
+
+})
+
+
+router.get('/data/misc_metrics', async (req, res) => {
+    
+    const miscMetric = await schemas.MiscMetrics.find({}).exec()
+
+    if (miscMetric) {
+        res.json(miscMetric)
+    } else {
+        console.error(error)
+        res.status(500).send('Error fetching miscellaneous metrics')
     }
 
 })
@@ -114,6 +188,19 @@ router.get('/sports', async(req, res) => {
     ]
 
     res.send(sports)
+})
+
+router.get('/units', async(req, res) => {
+    
+    const units = [
+        {"units": "lbs"},
+        {"units": "ft."},
+        {"units": "in."},
+        {"units": "s"},
+    ]
+
+    res.send(units)
+
 })
 
 

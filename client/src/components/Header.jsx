@@ -19,7 +19,13 @@ export default function Header(props) {
                     <a href="/new-session">New Speed Session</a>
                 </li>
                 <li>
+                    <a href="/new-misc-data">New Misc. Data</a>
+                </li>
+                <li>
                     <a href="/add-athlete">Add Athlete</a>
+                </li>
+                <li>
+                    <a href="/add-metric">Add Metric</a>
                 </li>
                 <li>
                     User: {userData.name}
