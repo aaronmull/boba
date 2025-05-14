@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import AthleteDropdown from "./elements/AthleteDropdown"
+import { slugify } from "../utils/slugify"
 
 function SelectAthlete() {
 
@@ -16,7 +17,8 @@ function SelectAthlete() {
             setError(<p className="required">Missing an athlete.</p>)
         } else {
             setError('')
-            navigate('/data/athlete/' + selectedAthlete)
+            const athleteSlug = slugify(selectedAthlete)
+            navigate(`/data/athlete/${athleteSlug}`)
         }
     }
 

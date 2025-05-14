@@ -1,17 +1,18 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import Chart from "./elements/Chart"
+import { deslugify } from "../utils/deslugify"
 
 
 
 function AthleteData() {
 
     const { athlete } = useParams()
-    console.log(athlete)
+    const athleteName = deslugify(athlete)
 
     return (
         <>
-            <h1>{athlete}'s Data</h1>
+            <h1>{athleteName}'s Data</h1>
         </>
     )
 }
