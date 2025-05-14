@@ -7,7 +7,6 @@ import Chart from "./elements/Chart"
 function AthleteData() {
 
     const { athlete } = useParams()
-    console.log(athlete)
 
     return (
         <>
