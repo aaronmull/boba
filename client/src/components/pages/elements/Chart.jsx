@@ -3,7 +3,7 @@ import AthleteDropdown from "./AthleteDropdown"
 import {LineChart, Line, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Legend, Tooltip} from "recharts"
 
 
-function Chart({ data }) {
+function Chart({ data, units }) {
 
     const [selectedAthlete, setSelectedAthlete] = useState('')
     const [athleteData, setAthleteData] = useState([])
@@ -23,6 +23,7 @@ function Chart({ data }) {
                     entriesByDate[date] = {
                         date,
                         time: Number(entry.time),
+                        measurement: entry.measurement || entry.time.toString(),
                     }
                 }
             })
@@ -39,16 +40,24 @@ function Chart({ data }) {
 
     const CustomTooltip = ({ active, payload, label }) => {
         if( active && payload && payload.length ) {
+            const entry = payload[0].payload
             return (
                 <div className="tooltip">
                     <p>{label}</p>
-                    <p>Time:
-                        <span> {payload[0].value}</span>
+                    <p>
+                        Mark: <strong> {entry.measurement ?? payload[0].value} </strong> {units}
                     </p>
                 </div>
             )
         }
+        return null
 
+    }
+
+    function formatInchesToFeet(inches) {
+        const ft = Math.floor(inches / 12);
+        const inch = Math.round(inches % 12);
+        return `${ft}'${inch}"`;
     }
 
     return(
@@ -60,7 +69,17 @@ function Chart({ data }) {
                     <LineChart data={athleteData} width={750}>
                         <CartesianGrid strokeDasharray="2 2" />
                         <XAxis dataKey="date" />
-                        <YAxis dataKey="time" domain={['auto', 'auto']} />
+                        <YAxis 
+                            dataKey="time" 
+                            domain={['auto', 'auto']} 
+                            label={{ value: units, angle: -30, position: 'insideLeft' }}
+                            tickFormatter={(value) => {
+                                if (units === 'ft.') {
+                                    return formatInchesToFeet(value)
+                                }
+                                return value;
+                            }}
+                        />
                         <Tooltip content={<CustomTooltip />} />
                         <Line type="monotone" dataKey="time" stroke="#3b82f6" />
                     </LineChart>

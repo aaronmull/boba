@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
 
-function Leaderboard({ metric, data }) {
+function Leaderboard({ metric, data, units }) {
 
     const [athletes, setAthletes] = useState([])
     const [selectedGender, setSelectedGender] = useState('All')
@@ -50,6 +50,20 @@ function Leaderboard({ metric, data }) {
     const leaderboardData = getLeaderboardData()
     const visibleData = showAll ? leaderboardData : leaderboardData.slice(0, 10)
 
+    function formatInchesToFeet(inches) {
+        const ft = Math.floor(inches / 12);
+        const inch = Math.round(inches % 12);
+        return `${ft}'${inch}"`;
+    }
+
+    function getLabelForUnits(units, metric) {
+        if (metric === 'Vertical Jump') return 'Height';
+        if (units === 's') return 'Time';
+        if (units === 'in.' || units === 'ft.') return 'Distance';
+        if (units === 'lbs') return 'Weight';
+        return 'Value';
+    }
+
     return (
         <>
             <div className="leaderboard">
@@ -75,7 +89,7 @@ function Leaderboard({ metric, data }) {
                         <tr>
                             <th>Rank</th>
                             <th>Athlete</th>
-                            <th>Time (s)</th>
+                            <th>{getLabelForUnits(units, metric)} {units && ` (${units})`}</th>
                             <th>Date</th>
                         </tr>
                     </thead>
@@ -84,7 +98,7 @@ function Leaderboard({ metric, data }) {
                             <tr key={index}>
                                 <td><b>{index + 1}</b></td>
                                 <td>{entry.athlete}</td>
-                                <td>{entry.time}</td>
+                                <td>{units === 'ft.' ? formatInchesToFeet(entry.time) : entry.time}</td>
                                 <td>{new Date(entry.date).toLocaleDateString('en-US', { timeZone: 'UTC' })}</td>
                             </tr>
                         ))}
