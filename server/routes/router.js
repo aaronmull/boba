@@ -65,9 +65,9 @@ router.get('/data/tenstart', async (req, res) => {
 // Misc Data get/post
 router.post('/misc_data', async (req, res) => {
     
-    const {athlete, metric, measurement} = req.body
+    const {athlete, metric, measurement, numericValue} = req.body
 
-    const miscData = {athlete: athlete, metric: metric, measurement: measurement}
+    const miscData = {athlete: athlete, metric: metric, measurement: measurement, numericValue: numericValue}
     const newMiscData = new schemas.MiscData(miscData)
     const saveData = await newMiscData.save()
     if(saveData){

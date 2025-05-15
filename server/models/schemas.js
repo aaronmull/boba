@@ -24,6 +24,7 @@ const miscDataSchema = new Schema({
     athlete: {type:String, required:true},
     metric: {type:String, required:true},
     measurement: {type:String, required:true},
+    numericValue: {type:Number, required:true},
     date: {type:Date, default:Date.now},
 })
 
